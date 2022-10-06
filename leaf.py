@@ -12,33 +12,7 @@ class Leaf:
         self.__height = height
         self.__holes = self.generate_holes(num_holes)
 
-    def generate_holes(self, num_holes: int) -> list:
-        """Return a list of "holes" where a hole is a circle shape of datatype vp.Shape"""
-        holes = []
-
-        max_x = self.__ellipse.horizontal_axis * 0.75
-        max_y = self.__ellipse.vertical_axis * 0.75
-        max_axis = max(self.__ellipse.horizontal_axis, self.__ellipse.vertical_axis) * 0.6
-        min_axis = max(self.__ellipse.horizontal_axis, self.__ellipse.vertical_axis) * 0.3
-
-        e = Ellipse(0, 0, 1, 1)
-        holes.append(e)
-        while True:
-            x = random.uniform(-max_x, max_x)
-            y = random.uniform(-max_y, max_y)
-            ax1 = random.uniform(min_axis, max_axis)
-            ax2 = random.uniform(min_axis, max_axis)
-            new_e = Ellipse(x, y, ax1, ax2)
-
-            if Ellipse.ellipse_intersecting_ellipse(e, new_e) or not Ellipse.ellipse_in_ellipse(new_e, self.__ellipse):
-                print("BAD ELLIPSE")
-                continue
-            else:
-                print("GOOD ELIPSE")
-                holes.append(new_e)
-                break
-        
-        return holes
+    
             
 
     def display(self) -> None:

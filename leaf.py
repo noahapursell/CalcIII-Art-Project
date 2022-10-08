@@ -2,6 +2,7 @@ from ellipse import Ellipse
 import vpython as vp
 import random
 import matplotlib.pyplot as plt
+from colors import Colors
 
 
 class Leaf:
@@ -12,22 +13,26 @@ class Leaf:
         self.__ellipse = ellipse
         self.__height = height
         self.__holes = self.get_holes(num_holes)
-        self.leaf = None
+        self.leaf = self.__get_leaf()
 
     
             
 
-    def display(self) -> None:
+    def __get_leaf(self):
         """Display the leaf in a vpython window"""
         shapes = [vp.shapes.ellipse(width = self.__ellipse.horizontal_axis, height = self.__ellipse.vertical_axis, pos=(self.__ellipse.x_pos, self.__ellipse.y_pos))]
         for hole in self.__holes:
             xs, ys = hole.get_points()
             shapes.append([[x, ys[ind]] for ind, x in enumerate(xs)])
-        self.leaf = vp.extrusion(
+        leaf = vp.extrusion(
             path = [vp.vec(0, 0, 0), vp.vec(0, self.__height, 0)],
             shape = shapes
         )
-        print("HERE")
+
+        leaf.color = Colors.get_random_color()
+        leaf.visible = False
+
+        return leaf
 
     
     def get_holes(self, num_holes) -> list:
@@ -72,7 +77,6 @@ class Leaf:
                         break
                     if Ellipse.ellipse_intersecting_ellipse(new_hole, hole):
                         intersects_other_hole = True
-                        print("SAVED")
                         break
                 if intersects_other_hole:
                     # If the new hole intersects with a previous hole, make a new one
@@ -97,3 +101,8 @@ class Leaf:
     @property
     def holes(self) -> list:
         return self.__holes
+
+    def set_visibility(self, visibility: bool):
+        """Make the object visible or not"""
+        self.leaf.visible = visibility
+        self.leaf.color = Colors.get_random_color()
